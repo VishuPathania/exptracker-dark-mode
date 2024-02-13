@@ -4,23 +4,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import CartContext from '../../Store/Cart-context';
 import DailyExpensesPage from "../Expense/DailyExpensesPage "
 import "./Slider.css"
+
 const Home = () => {
-
-  const ctx=useContext(CartContext);
-  const navigate=useNavigate();
+  const ctx = useContext(CartContext);
+  const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState(null);
- const LogoutHandler=()=>{
-   navigate("/Login");
-   ctx.logOut();
-  alert("Logged out Successfully");
 
- }
- 
+  const LogoutHandler = () => {
+    navigate("/Login");
+    ctx.logOut();
+    alert("Logged out Successfully");
+  }
+
   useEffect(() => {
     const api_key = 'AIzaSyDO57GDvByH7Hw3V5rhGMoyUpwR8aVnmOk';
     const api_url = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${api_key}`;
-
-    const idToken = localStorage.getItem('idToken'); 
+    const idToken = localStorage.getItem('idToken');
 
     if (idToken) {
       fetch(api_url, {
@@ -37,7 +36,7 @@ const Home = () => {
           return response.json();
         })
         .then((data) => {
-          setUserDetails(data.users[0]); 
+          setUserDetails(data.users[0]);
         })
         .catch((error) => {
           console.error(error);
@@ -45,34 +44,47 @@ const Home = () => {
     }
   }, []);
 
-
-  const premiumHandler =()=>{
-ctx.PremiumCall();
-
+  const premiumHandler = () => {
+    ctx.PremiumCall();
   }
 
-
-  const lightHandler=()=>{
-    ctx.callTog();
+  const lightHandler = () => {
+    ctx.callTog(); // Toggle dark mode state
   }
+
   return (
-    <div className={ctx.toggle ? classes.homeBodyLight :classes.homeBodyDark}>
-     <div className={classes.HomeHeader}>
-  <h3 className={classes.heading}>Welcome to Expense Tracker {ctx.setPremium &&  <span className={ctx.toggle ? classes.off :classes.on} onClick={lightHandler}>Dark mode off</span>}</h3>
-  {userDetails ? (
-    <div className={classes.profiledeatils}>
-       {ctx.premium&& !ctx.setPremium &&  <span className={classes.premium}onClick={premiumHandler}>Activate the premium</span>}
-      <img src={userDetails.photoUrl} alt="/" className={classes.profileimage} />
-      <span className={classes.username}>{userDetails.displayName}</span>
-    </div>
-  ) : (
-    <span className={classes.inx}>Your Profile is incomplete <Link to="/Profile">Complete now</Link></span>
-  )}
+    <div className={ctx.toggle ? classes.homeBodyLight : classes.homeBodyDark}>
+      <div className={classes.HomeHeader}>
+        <h3 className={classes.heading}>
+          Welcome to Expense Tracker
+          {ctx.setPremium && (
+            <span className={ctx.toggle ? classes.off : classes.on} onClick={lightHandler}>
+              Dark mode {ctx.toggle ? 'off' : 'on'}
+            </span>
+          )}
+        </h3>
+        {userDetails ? (
+          <div className={classes.profiledeatils}>
+            {ctx.premium && !ctx.setPremium && (
+              <span className={classes.premium} onClick={premiumHandler}>
+                Activate the premium
+              </span>
+            )}
+            <img src={userDetails.photoUrl} alt="/" className={classes.profileimage} />
+            <span className={classes.username}>{userDetails.displayName}</span>
+          </div>
+        ) : (
+          <span className={classes.inx}>
+            Your Profile is incomplete <Link to="/Profile">Complete now</Link>
+          </span>
+        )}
 
-  <span className={classes.logout} onClick={LogoutHandler}>Log out</span>
-</div>
+        <span className={classes.logout} onClick={LogoutHandler}>
+          Log out
+        </span>
+      </div>
 
-<DailyExpensesPage />
+      <DailyExpensesPage />
     </div>
   );
 };

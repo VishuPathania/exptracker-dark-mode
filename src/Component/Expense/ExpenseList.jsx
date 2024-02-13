@@ -92,10 +92,10 @@ const exportToCSV = () => {
             </div>
               <div>
               <span className={classes.label}>Date:</span>{' '}
-              {expense.date}
+              {new Date(expense.date).toLocaleString()}
             </div>
             <div>
-              <button className={classes.buttonedit} >Edit</button>
+              
               <button className={classes.buttondel} onClick={() => deleteExpenseHandler(expense)}>Remove</button>
             </div>
           </li>

@@ -55,7 +55,7 @@ label {
 .logbutton {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #a86e97;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -65,7 +65,7 @@ label {
 }
 
 .logbutton:hover {
-  background-color: #0056b3;
+  background-color: #66166b;
 }
 .active{
   font-weight: 400;
